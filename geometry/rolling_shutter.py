@@ -1,10 +1,6 @@
-import sys
-import os
-sys.path.append(os.path.realpath(__file__)))
-
 import numpy as np
-import utils as ut
-import rotation as rot
+from . import utils as ut
+from . import rotation as rot
 from scipy.linalg import null_space
 
 # angle-axis to rotation matrix fast version for RS projection
