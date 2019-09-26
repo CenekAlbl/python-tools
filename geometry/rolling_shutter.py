@@ -1,6 +1,6 @@
 import numpy as np
-from geometry import utils as ut
-from geometry import rotation as rot
+import utils as ut
+import rotation as rot
 from scipy.linalg import null_space
 
 # angle-axis to rotation matrix fast version for RS projection
