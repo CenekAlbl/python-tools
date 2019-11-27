@@ -54,6 +54,8 @@ def vanillaRansac(estimateFn, verifyFn, data, minSamples, threshold, maxIter, ve
                     nInliersMax = len(inliers)
                     if verbose:
                         print("Iteration %d, inliers: %d" % (i,nInliersMax))
+                        print("Model:")
+                        print(Mi)
     if not result and verbose:
         warnings.warn('Model not found! (something is wrong)')
     return result
@@ -124,11 +126,13 @@ def loRansacSimple(estimateFn, verifyFn, data, n, threshold, maxIter, optimizeFn
                     nInliersMax = len(inliers)
                     if verbose:
                         print("Iteration %d, inliers: %d, err before optimization: %f" % (i,nInliersMax,np.sum(err[err<threshold])))
+                        print("Model:")
+                        print(Mi)
                     # Do local optimization on inliers
                     fn = lambda x: optimizeFn(x,data[:,inliers])
                     res = least_squares(fn,Mi.ravel())
                     Mo = res["x"]
-                    err = verifyFn(Mo,data)
+                    err = optimizeFn(Mo,data)
                     inliers = idxs[err<optimizeThr]
                     if len(inliers) >= nInliersMax:
                         result["model"] = Mo
@@ -136,6 +140,8 @@ def loRansacSimple(estimateFn, verifyFn, data, n, threshold, maxIter, optimizeFn
                         nInliersMax = len(inliers)
                         if verbose:
                             print("Iteration %d, inliers after LO: %d, err after optimization: %f"% (i,nInliersMax,np.sum(err[err<threshold])))
+                            print("Model:")
+                            print(Mo)
                     else:
                         warnings.warn("Found smaller set (%d) after optimization" % len(inliers))
     if not result and verbose:
