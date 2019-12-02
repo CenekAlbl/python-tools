@@ -152,7 +152,7 @@ def calc_R6P_eax_err_for_lsq(M,data):
         RX = np.sum(Rt.transpose()*Xrep.ravel(order='F').reshape((3,3*n),order='F'),axis=0).reshape((3,n),order='F')
         Z = RX + np.tile(C,(1,n)) + r*np.tile(t,(1,n))
         u_rs = ut.h2a(Z)
-        err  = (u_rs-u).ravel()
+        err  = (np.sqrt(np.sum((u_rs-u)**2,axis=0))).ravel()
         return err
 
 def calc_R6P_2lin_err(M,data):

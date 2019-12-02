@@ -1,6 +1,7 @@
 # useful functions to work with camera in computer vision
 
 import numpy as np
+from matplotlib import pyplot as plt
 import scipy.linalg as la
 from . import utils as ut
 
@@ -26,6 +27,15 @@ def decomposeCameraMatrix(P):
         print('Warning: R is left handed')
 
     return K, R, C
+
+def plotCamera(ax,P,color='blue',size=1):
+    K, R, C = decomposeCameraMatrix(P)
+    ptsCam = (np.array([[-1, -1, 1],[ 1, -1, 1], [1, 1, 1], [-1, 1, 1], [0, 0, 0]]).transpose())*size
+    ptsWorld = ut.h2a(np.vstack((np.hstack((R.transpose(), C)),np.array((0, 0, 0, 1)))).dot(ut.a2h(ptsCam)))
+    ptsIdxs = np.array([0, 1, 1, 2, 2, 3, 3, 0, 0, 4, 1, 4, 2, 4, 3, 4])
+    lines = ptsWorld[:,ptsIdxs]
+    ax.plot(lines[0,:],lines[1,:],lines[2,:],color)
+
 
 
 
