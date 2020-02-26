@@ -22,6 +22,17 @@ def decomposeCameraMatrix(P):
     C = ut.h2a(np.array((X,Y,Z,T)).reshape(4,1))
 
     K, R = la.rq(M)
+    K = K / np.abs(K[2,2])
+
+    if K[0,0] < 0:
+        D = np.diag([-1, -1, 1])
+        K = K.dot(D)
+        R = D.dot(R)
+
+    if K[1,1] < 0:
+        D = np.diag([1, -1, -1])
+        K = K.dot(D)
+        R = D.dot(R)
 
     if np.dot(np.cross(R[:,0], R[:,1]), R[:,2]) < 0:
         print('Warning: R is left handed')
